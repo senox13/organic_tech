@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "organic_tech:block/flesh_block_eye"
+  }
+}
