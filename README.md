@@ -5,7 +5,7 @@ This mod is centered around biological-themed technology and automation. It is s
 # Contact
 
 Development of this mod is coordinated through the Discord server *Jeefle's Marsh*. If you have any questions or this mod looks interesting to you, feel free to come say hello!
-https://discord.gg/jnJG7GxN
+https://discord.com/invite/weYDmnwJFB
 
 # Contributing
 
