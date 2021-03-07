@@ -9,6 +9,8 @@ import com.github.senox13.organic_tech.blocks.ModBlocks;
 
 import static com.github.senox13.organic_tech.OrganicTech.MODID;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 public final class BlockStates extends BlockStateProvider{
 	/*
 	 * Fields
@@ -38,7 +40,12 @@ public final class BlockStates extends BlockStateProvider{
 	 */
 	private void registerFleshBlock(){
 		getVariantBuilder(ModBlocks.FLESH_BLOCK.get()).forAllStates(state -> {
-			return ConfiguredModel.allRotations(models().cubeAll("flesh_block", modLoc(BLOCK_DIR + "/flesh_block")), false);
+			//Generate the set of rotations for a flesh block w/o eyes
+			ConfiguredModel[] rotations = ConfiguredModel.allRotations(models().cubeAll("flesh_block", modLoc(BLOCK_DIR + "/flesh_block")), false, 4);
+			//then append the rotations for one eye
+			rotations = ArrayUtils.addAll(rotations, ConfiguredModel.allRotations(models().cubeAll("flesh_block_1eye", modLoc(BLOCK_DIR + "/flesh_block_1eye")), false, 1));
+			//then append the rotations for two eyes and return
+			return ArrayUtils.addAll(rotations, ConfiguredModel.allRotations(models().cubeAll("flesh_block_2eye", modLoc(BLOCK_DIR + "/flesh_block_2eye")), false, 1));
 		});
 	}
 }
