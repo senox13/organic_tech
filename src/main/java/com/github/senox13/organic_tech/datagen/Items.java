@@ -24,7 +24,6 @@ public final class Items extends ItemModelProvider{
 	@Override
 	protected void registerModels(){
 		withExistingParent(ModItems.FLESH_BLOCK.get().getRegistryName().getPath(), new ResourceLocation(MODID, "block/flesh_block"));
-		withExistingParent(ModItems.FLESH_BLOCK_EYE.get().getRegistryName().getPath(), new ResourceLocation(MODID, "block/flesh_block_eye"));
 	}
 
 }

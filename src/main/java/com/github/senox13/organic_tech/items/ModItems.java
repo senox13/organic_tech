@@ -25,7 +25,6 @@ public final class ModItems{
 		}
 	};
 	public static final RegistryObject<Item> FLESH_BLOCK = ITEMS.register("flesh_block", () -> new BlockItem(ModBlocks.FLESH_BLOCK.get(), new Item.Properties().group(ITEM_GROUP)));
-	public static final RegistryObject<Item> FLESH_BLOCK_EYE = ITEMS.register("flesh_block_eye", () -> new BlockItem(ModBlocks.FLESH_BLOCK_EYE.get(), new Item.Properties().group(ITEM_GROUP)));
 	
 	
 	/*

@@ -16,7 +16,6 @@ public final class ModBlocks{
 	 */
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
 	public static final RegistryObject<Block> FLESH_BLOCK = BLOCKS.register("flesh_block", () -> new Block(Properties.from(Blocks.SLIME_BLOCK)));
-	public static final RegistryObject<Block> FLESH_BLOCK_EYE = BLOCKS.register("flesh_block_eye", () -> new Block(Properties.from(Blocks.SLIME_BLOCK)));
 	
 	
 	/*
