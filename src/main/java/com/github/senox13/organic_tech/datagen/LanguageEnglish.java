@@ -24,5 +24,7 @@ public final class LanguageEnglish extends LanguageProvider{
 	protected void addTranslations(){
 		add("itemGroup." + ModItems.ITEM_GROUP.getPath(), "Organic Tech");
 		add(ModBlocks.FLESH_BLOCK.get(), "Flesh Block");
+		add(ModBlocks.ARTERY.get(), "Artery");
+		add(ModBlocks.VEIN.get(), "Vein");
 	}
 }
