@@ -12,7 +12,7 @@ import net.minecraftforge.client.model.generators.ModelBuilder.ElementBuilder;
 import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import com.github.senox13.organic_tech.blocks.ModBlocks;
+import com.github.senox13.organic_tech.blocks.OrganicTechBlocks;
 import com.github.senox13.organic_tech.blocks.PipeBlock;
 
 import static com.github.senox13.organic_tech.OrganicTech.MODID;
@@ -42,8 +42,8 @@ public final class BlockStates extends BlockStateProvider{
 		
 		//BlockStates + block-specific models
 		registerFleshBlock();
-		registerPipeBlock(ModBlocks.ARTERY.get(), "artery");
-		registerPipeBlock(ModBlocks.VEIN.get(), "vein");
+		registerPipeBlock(OrganicTechBlocks.ARTERY.get(), "artery");
+		registerPipeBlock(OrganicTechBlocks.VEIN.get(), "vein");
 	}
 	
 	
@@ -76,7 +76,7 @@ public final class BlockStates extends BlockStateProvider{
 	 * BlockState generator methods
 	 */
 	private void registerFleshBlock(){
-		getVariantBuilder(ModBlocks.FLESH_BLOCK.get()).forAllStates(state -> {
+		getVariantBuilder(OrganicTechBlocks.FLESH_BLOCK.get()).forAllStates(state -> {
 			//Generate the set of rotations for a flesh block w/o eyes
 			ConfiguredModel[] rotations = ConfiguredModel.allRotations(models().cubeAll("flesh_block", modLoc(BLOCK_DIR + "/flesh_block")), false, 4);
 			//then append the rotations for one eye

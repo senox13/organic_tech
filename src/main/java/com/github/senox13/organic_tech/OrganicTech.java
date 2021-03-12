@@ -1,7 +1,7 @@
 package com.github.senox13.organic_tech;
 
-import com.github.senox13.organic_tech.blocks.ModBlocks;
-import com.github.senox13.organic_tech.items.ModItems;
+import com.github.senox13.organic_tech.blocks.OrganicTechBlocks;
+import com.github.senox13.organic_tech.items.OrganicTechItems;
 
 import net.minecraftforge.fml.common.Mod;
 
@@ -17,7 +17,7 @@ public final class OrganicTech{
 	 * Methods
 	 */
     public OrganicTech(){
-    	ModBlocks.register();
-    	ModItems.register();
+    	OrganicTechBlocks.register();
+    	OrganicTechItems.register();
     }
 }

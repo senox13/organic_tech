@@ -2,8 +2,8 @@ package com.github.senox13.organic_tech.datagen;
 
 import static com.github.senox13.organic_tech.OrganicTech.MODID;
 
-import com.github.senox13.organic_tech.blocks.ModBlocks;
-import com.github.senox13.organic_tech.items.ModItems;
+import com.github.senox13.organic_tech.blocks.OrganicTechBlocks;
+import com.github.senox13.organic_tech.items.OrganicTechItems;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.LanguageProvider;
@@ -22,9 +22,10 @@ public final class LanguageEnglish extends LanguageProvider{
 	 */
 	@Override
 	protected void addTranslations(){
-		add("itemGroup." + ModItems.ITEM_GROUP.getPath(), "Organic Tech");
-		add(ModBlocks.FLESH_BLOCK.get(), "Flesh Block");
-		add(ModBlocks.ARTERY.get(), "Artery");
-		add(ModBlocks.VEIN.get(), "Vein");
+		add("itemGroup." + OrganicTechItems.ITEM_GROUP.getPath(), "Organic Tech");
+		add(OrganicTechBlocks.FLESH_BLOCK.get(), "Flesh Block");
+		add(OrganicTechBlocks.ARTERY.get(), "Artery");
+		add(OrganicTechBlocks.VEIN.get(), "Vein");
+		add(OrganicTechItems.SCALPEL.get(), "Scalpel");
 	}
 }
