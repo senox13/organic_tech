@@ -1,6 +1,7 @@
 package com.github.senox13.organic_tech.blocks;
 
 import com.github.senox13.organic_tech.items.OrganicTechItems;
+import com.github.senox13.organic_tech.items.ScalpelItem;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -8,6 +9,7 @@ import net.minecraft.block.SixWayBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ITag;
@@ -15,6 +17,8 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IWorld;
@@ -95,21 +99,27 @@ public class PipeBlock extends SixWayBlock{ //TODO: This should eventually be wa
 	
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		if(!worldIn.isRemote() && player.getHeldItem(handIn).getItem() == OrganicTechItems.SCALPEL.get()){
-			if(player.isCrouching()){
-				//TODO: This may have unintended side-effects, should read this method's code better
-				((ServerPlayerEntity)player).interactionManager.tryHarvestBlock(pos); //TODO: Not working
+		if(!worldIn.isRemote() && player.getHeldItem(handIn).getItem() instanceof ScalpelItem){
+			if(player.isSneaking()){
+				ServerPlayerEntity serverPlayer = (ServerPlayerEntity)player;
+				serverPlayer.interactionManager.tryHarvestBlock(pos);
+				ItemStack heldItem = player.getHeldItem(handIn);
+				heldItem.attemptDamageItem(1, player.getRNG(), serverPlayer);
+				worldIn.playSound(null, pos, SoundEvents.BLOCK_SLIME_BLOCK_BREAK, SoundCategory.BLOCKS, 1.0f, 1.0f);
 			}else{
 				Direction hitFace = hit.getFace();
-				BlockPos adjacentPos = pos.offset(hitFace);
-				BlockState adjacentState = worldIn.getBlockState(adjacentPos);
-				Block adjacentBlock = adjacentState.getBlock();
-				if(canConnectToBlock(adjacentBlock)){
-					worldIn.setBlockState(pos, state.with(FACING_TO_PROPERTY_MAP.get(hitFace), true));
-					if(adjacentBlock instanceof PipeBlock){
-						worldIn.setBlockState(adjacentPos, adjacentState.with(FACING_TO_PROPERTY_MAP.get(hitFace.getOpposite()), true));
+				if(!state.get(FACING_TO_PROPERTY_MAP.get(hitFace))){
+					BlockPos adjacentPos = pos.offset(hitFace);
+					BlockState adjacentState = worldIn.getBlockState(adjacentPos);
+					if(canConnectToBlock(adjacentState.getBlock())){
+						worldIn.setBlockState(pos, state.with(FACING_TO_PROPERTY_MAP.get(hitFace), true));
+						if(adjacentState.getBlock() instanceof PipeBlock){
+							worldIn.setBlockState(adjacentPos, adjacentState.with(FACING_TO_PROPERTY_MAP.get(hitFace.getOpposite()), true));
+						}
+						ItemStack heldItem = player.getHeldItem(handIn);
+						heldItem.attemptDamageItem(1, player.getRNG(), (ServerPlayerEntity)player);
+						worldIn.playSound(player, pos, SoundEvents.BLOCK_SLIME_BLOCK_BREAK, SoundCategory.BLOCKS, 1.0f, 1.0f);
 					}
-					//TODO: A sound would be a nice touch here
 				}
 			}
 			return ActionResultType.SUCCESS;

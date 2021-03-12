@@ -4,6 +4,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTier;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -37,9 +38,8 @@ public final class OrganicTechItems{
 	/*
 	 * Items
 	 */
-	public static final ToolType SCALPEL_TOOLTYPE = ToolType.get("scalpel");
 	//TODO: This needs to damage over time, a max stack size of 1, and a better hand position
-	public static final RegistryObject<Item> SCALPEL = ITEMS.register("scalpel", () -> new Item(new Item.Properties().group(ITEM_GROUP).addToolType(SCALPEL_TOOLTYPE, 2)));
+	public static final RegistryObject<Item> SCALPEL = ITEMS.register("scalpel", () -> new ScalpelItem(ItemTier.IRON, 3, -1.8f, new Item.Properties().group(ITEM_GROUP)));
 	
 	
 	/*
