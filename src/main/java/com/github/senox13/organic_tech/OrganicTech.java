@@ -2,6 +2,7 @@ package com.github.senox13.organic_tech;
 
 import com.github.senox13.organic_tech.blocks.OrganicTechBlocks;
 import com.github.senox13.organic_tech.items.OrganicTechItems;
+import com.github.senox13.organic_tech.loot.OrganicTechLootModifiers;
 
 import net.minecraftforge.fml.common.Mod;
 
@@ -14,10 +15,11 @@ public final class OrganicTech{
     
 	
 	/*
-	 * Methods
+	 * Constructor
 	 */
     public OrganicTech(){
     	OrganicTechBlocks.register();
     	OrganicTechItems.register();
+    	OrganicTechLootModifiers.register();
     }
 }

@@ -16,6 +16,8 @@ import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.LootTableProvider;
 import net.minecraft.data.loot.BlockLootTables;
+import net.minecraft.data.loot.EntityLootTables;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.loot.ConstantRange;
 import net.minecraft.loot.ItemLootEntry;
@@ -53,7 +55,8 @@ public final class LootTables extends LootTableProvider{
 	@Override
     protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootParameterSet>> getTables(){
         return Lists.newArrayList(
-            Pair.of(ModBlockLootTables::new, LootParameterSets.BLOCK)
+            Pair.of(ModBlockLootTables::new, LootParameterSets.BLOCK),
+            Pair.of(ModEntityLootTables::new, LootParameterSets.ENTITY)
         );
     }
 	
@@ -86,7 +89,7 @@ public final class LootTables extends LootTableProvider{
 		@Override
 	    protected Iterable<Block> getKnownBlocks(){
 	        return ForgeRegistries.BLOCKS.getValues().stream()
-	            .filter(entity -> Optional.ofNullable(entity.getRegistryName())
+	            .filter(block -> Optional.ofNullable(block.getRegistryName())
 	                .filter(registryName -> registryName.getNamespace().equals(MODID)).isPresent()
 	            ).collect(Collectors.toList());
 	    }
@@ -96,6 +99,26 @@ public final class LootTables extends LootTableProvider{
 			registerBlockItemDrop(OrganicTechBlocks.FLESH_BLOCK.get(), OrganicTechItems.FLESH_BLOCK.get());
 			registerBlockItemDrop(OrganicTechBlocks.ARTERY.get(), OrganicTechItems.ARTERY.get());
 			registerBlockItemDrop(OrganicTechBlocks.VEIN.get(), OrganicTechItems.VEIN.get());
+		}
+	}
+	
+	private class ModEntityLootTables extends EntityLootTables{
+		@Override
+	    protected Iterable<EntityType<?>> getKnownEntities(){
+	        return ForgeRegistries.ENTITIES.getValues().stream()
+	            .filter(entity -> Optional.ofNullable(entity.getRegistryName())
+	                .filter(registryName -> registryName.getNamespace().equals(MODID)).isPresent()
+	            ).collect(Collectors.toList());
+	    }
+		
+		@Override
+	    protected void addTables(){
+			registerLootTable(new ResourceLocation(MODID, "entities/cow_organs"), LootTable.builder()
+				.addLootPool(LootPool.builder() 
+					.rolls(ConstantRange.of(1))
+					.addEntry(ItemLootEntry.builder(OrganicTechItems.COW_STOMACH.get()))
+				)
+			);
 		}
 	}
 }

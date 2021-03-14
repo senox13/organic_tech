@@ -14,6 +14,9 @@ public final class DataGenerators{
 			generator.addProvider(new BlockStates(generator, event.getExistingFileHelper()));
 			generator.addProvider(new Items(generator, event.getExistingFileHelper()));
 			generator.addProvider(new LanguageEnglish(generator));
+		}
+		if(event.includeServer()){
+			//TODO: Datagen GLMs
 			generator.addProvider(new LootTables(generator));
 			generator.addProvider(new BlockTags(generator, event.getExistingFileHelper()));
 		}

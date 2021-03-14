@@ -27,5 +27,6 @@ public final class LanguageEnglish extends LanguageProvider{
 		add(OrganicTechBlocks.ARTERY.get(), "Artery");
 		add(OrganicTechBlocks.VEIN.get(), "Vein");
 		add(OrganicTechItems.SCALPEL.get(), "Scalpel");
+		add(OrganicTechItems.COW_STOMACH.get(), "Cow Stomach");
 	}
 }

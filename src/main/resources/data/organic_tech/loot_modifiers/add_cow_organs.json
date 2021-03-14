@@ -1,0 +1,24 @@
+{
+	"type": "organic_tech:append_loot",
+	"conditions": [
+		{
+			"condition": "entity_properties",
+			"entity": "killer",
+			"predicate": {
+				"equipment": {
+					"mainhand": {
+						"item": "organic_tech:scalpel"
+					}
+				}
+			}
+		},
+		{
+			"condition": "entity_properties",
+			"entity": "this",
+			"predicate": {
+				"type": "minecraft:cow"
+			}
+		}
+	],
+	"loot_table": "organic_tech:entities/cow_organs"
+}

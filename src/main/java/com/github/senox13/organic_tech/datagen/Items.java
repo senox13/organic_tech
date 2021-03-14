@@ -42,6 +42,8 @@ public final class Items extends ItemModelProvider{
 		 */
 		withExistingParent(OrganicTechItems.SCALPEL.get().getRegistryName().getPath(), mcLoc(ITEM_DIR + "/handheld"))
 			.texture("layer0", modLoc(ITEM_DIR + "/scalpel"));
+		withExistingParent(OrganicTechItems.COW_STOMACH.get().getRegistryName().getPath(), mcLoc(ITEM_DIR + "/generated"))
+		.texture("layer0", modLoc(ITEM_DIR + "/cow_stomach"));
 	}
 
 }
