@@ -1,11 +1,10 @@
 package com.github.senox13.organic_tech.blocks;
 
-import com.github.senox13.organic_tech.items.OrganicTechItems;
-import com.github.senox13.organic_tech.items.ScalpelItem;
-
+import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SixWayBlock;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
@@ -23,6 +22,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import com.github.senox13.organic_tech.items.OrganicTechItems;
+import com.github.senox13.organic_tech.items.ScalpelItem;
 
 import static com.github.senox13.organic_tech.OrganicTech.MODID;
 
@@ -75,16 +76,27 @@ public class PipeBlock extends SixWayBlock{ //TODO: This should eventually be wa
 	
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context){
-		Direction connectionDir = context.getFace();
-		BlockPos adjacentPos = context.getPos().offset(connectionDir.getOpposite());
+		Direction connectionDir = context.getFace().getOpposite();
+		BlockPos adjacentPos = context.getPos().offset(connectionDir);
 		Block adjacentBlock = context.getWorld().getBlockState(adjacentPos).getBlock();
-		boolean doConnection = canConnectToBlock(adjacentBlock);
-		if(adjacentBlock instanceof PipeBlock){
-			BlockState newState = context.getWorld().getBlockState(adjacentPos).with(FACING_TO_PROPERTY_MAP.get(connectionDir), true);
-			context.getWorld().setBlockState(adjacentPos, newState);
+		if(canConnectToBlock(adjacentBlock)){
+			return this.getDefaultState().with(FACING_TO_PROPERTY_MAP.get(connectionDir), true);
 		}
-		BlockState state = this.getDefaultState().with(FACING_TO_PROPERTY_MAP.get(connectionDir.getOpposite()), doConnection);
-		return state;
+		return this.getDefaultState();
+	}
+	
+	@Override
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack){
+		for(Direction dir : Direction.values()){
+			if(state.get(FACING_TO_PROPERTY_MAP.get(dir))){
+				BlockPos adjacentPos = pos.offset(dir);
+				BlockState adjacentState = worldIn.getBlockState(adjacentPos);
+				Block adjacentBlock = adjacentState.getBlock();
+				if(adjacentBlock instanceof PipeBlock && canConnectToBlock(adjacentBlock)){ //FIXME: Hardcoded for now
+					worldIn.setBlockState(adjacentPos, adjacentState.with(FACING_TO_PROPERTY_MAP.get(dir.getOpposite()), true));
+				}
+			}
+		}
 	}
 	
 	@Override
