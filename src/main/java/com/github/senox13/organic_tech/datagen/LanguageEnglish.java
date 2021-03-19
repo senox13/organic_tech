@@ -22,10 +22,22 @@ public final class LanguageEnglish extends LanguageProvider{
 	 */
 	@Override
 	protected void addTranslations(){
+		/*
+		 * UI strings
+		 */
 		add("itemGroup." + OrganicTechItems.ITEM_GROUP.getPath(), "Organic Tech");
+		
+		/*
+		 * Block names
+		 */
 		add(OrganicTechBlocks.FLESH_BLOCK.get(), "Flesh Block");
 		add(OrganicTechBlocks.ARTERY.get(), "Artery");
 		add(OrganicTechBlocks.VEIN.get(), "Vein");
+		add(OrganicTechBlocks.COMBUSTIVE_HEART.get(), "Combustive Heart");
+		
+		/*
+		 * Item names
+		 */
 		add(OrganicTechItems.SCALPEL.get(), "Scalpel");
 		add(OrganicTechItems.COW_STOMACH.get(), "Cow Stomach");
 	}

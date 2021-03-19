@@ -9,11 +9,15 @@ import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelBuilder.ElementBuilder;
+import net.minecraftforge.client.model.generators.ModelFile.ExistingModelFile;
 import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
+
+import com.github.senox13.organic_tech.blocks.CombustableHeartBlock;
 import com.github.senox13.organic_tech.blocks.OrganicTechBlocks;
 import com.github.senox13.organic_tech.blocks.PipeBlock;
+import com.github.senox13.organic_tech.blocks.properties.BloodConnectionType;
 
 import static com.github.senox13.organic_tech.OrganicTech.MODID;
 
@@ -44,6 +48,7 @@ public final class BlockStates extends BlockStateProvider{
 		registerFleshBlock();
 		registerPipeBlock(OrganicTechBlocks.ARTERY.get(), "artery");
 		registerPipeBlock(OrganicTechBlocks.VEIN.get(), "vein");
+		registerCombustiveHeart();
 	}
 	
 	
@@ -116,5 +121,40 @@ public final class BlockStates extends BlockStateProvider{
 		multipart.part().modelFile(segment).uvLock(true).rotationX(90).addModel().condition(PipeBlock.UP, true);
 		multipart.part().modelFile(segment).uvLock(true).rotationX(270).addModel().condition(PipeBlock.DOWN, true);
 		
+	}
+	
+	private void registerCombustiveHeart(){
+		Block heartBlock = OrganicTechBlocks.COMBUSTIVE_HEART.get();
+		
+		//Generate center model
+		BlockModelBuilder center = models().withExistingParent(BLOCK_DIR + "/" + heartBlock.getRegistryName().getPath(), BLOCK_DIR + "/block")
+			.element().from(3, 3, 3).to(13, 13, 13).allFaces((dir, face) -> face.texture("#side")).end()
+			.texture("side", BLOCK_DIR + "/combustive_heart")
+			.texture("particle", BLOCK_DIR + "/combustive_heart");
+		
+		//Get existing vein/artery pipe segments
+		String arterySegmentPath = BLOCK_DIR + "/" + OrganicTechBlocks.ARTERY.get().getRegistryName().getPath() + "_segment";
+		ExistingModelFile arterySegment = models().getExistingFile(modLoc(arterySegmentPath));
+		
+		String veinSegmentPath = BLOCK_DIR + "/" + OrganicTechBlocks.VEIN.get().getRegistryName().getPath() + "_segment";
+		ExistingModelFile veinSegment = models().getExistingFile(modLoc(veinSegmentPath));
+		
+		//Generate BlockState JSON
+		MultiPartBlockStateBuilder multipart = getMultipartBuilder(heartBlock);
+		multipart.part().modelFile(center).addModel();
+		//Add artery segments
+		multipart.part().modelFile(arterySegment).uvLock(true).addModel().condition(CombustableHeartBlock.SOUTH, BloodConnectionType.ARTERY);
+		multipart.part().modelFile(arterySegment).uvLock(true).rotationY(90).addModel().condition(CombustableHeartBlock.WEST, BloodConnectionType.ARTERY);
+		multipart.part().modelFile(arterySegment).uvLock(true).rotationY(180).addModel().condition(CombustableHeartBlock.NORTH, BloodConnectionType.ARTERY);
+		multipart.part().modelFile(arterySegment).uvLock(true).rotationY(270).addModel().condition(CombustableHeartBlock.EAST, BloodConnectionType.ARTERY);
+		multipart.part().modelFile(arterySegment).uvLock(true).rotationX(90).addModel().condition(CombustableHeartBlock.UP, BloodConnectionType.ARTERY);
+		multipart.part().modelFile(arterySegment).uvLock(true).rotationX(270).addModel().condition(CombustableHeartBlock.DOWN, BloodConnectionType.ARTERY);
+		//Add vein segments
+		multipart.part().modelFile(veinSegment).uvLock(true).addModel().condition(CombustableHeartBlock.SOUTH, BloodConnectionType.VEIN);
+		multipart.part().modelFile(veinSegment).uvLock(true).rotationY(90).addModel().condition(CombustableHeartBlock.WEST, BloodConnectionType.VEIN);
+		multipart.part().modelFile(veinSegment).uvLock(true).rotationY(180).addModel().condition(CombustableHeartBlock.NORTH, BloodConnectionType.VEIN);
+		multipart.part().modelFile(veinSegment).uvLock(true).rotationY(270).addModel().condition(CombustableHeartBlock.EAST, BloodConnectionType.VEIN);
+		multipart.part().modelFile(veinSegment).uvLock(true).rotationX(90).addModel().condition(CombustableHeartBlock.UP, BloodConnectionType.VEIN);
+		multipart.part().modelFile(veinSegment).uvLock(true).rotationX(270).addModel().condition(CombustableHeartBlock.DOWN, BloodConnectionType.VEIN);
 	}
 }

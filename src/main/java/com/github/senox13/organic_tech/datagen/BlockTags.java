@@ -29,8 +29,8 @@ public final class BlockTags extends BlockTagsProvider{
 	@Override
 	protected void registerTags(){
 		getOrCreateBuilder(OrganicTechTags.ARTERY_CONNECTABLE)
-			.add(OrganicTechBlocks.FLESH_BLOCK.get(), OrganicTechBlocks.ARTERY.get());
+			.add(OrganicTechBlocks.FLESH_BLOCK.get(), OrganicTechBlocks.ARTERY.get(), OrganicTechBlocks.COMBUSTIVE_HEART.get());
 		getOrCreateBuilder(OrganicTechTags.VEIN_CONNECTABLE)
-			.add(OrganicTechBlocks.FLESH_BLOCK.get(), OrganicTechBlocks.VEIN.get());
+			.add(OrganicTechBlocks.FLESH_BLOCK.get(), OrganicTechBlocks.VEIN.get(), OrganicTechBlocks.COMBUSTIVE_HEART.get());
 	}
 }

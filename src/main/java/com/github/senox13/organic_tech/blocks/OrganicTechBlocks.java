@@ -22,6 +22,7 @@ public final class OrganicTechBlocks{
 	public static final RegistryObject<Block> FLESH_BLOCK = BLOCKS.register("flesh_block", () -> new Block(Properties.create(Material.ORGANIC, MaterialColor.RED).sound(SoundType.SLIME).harvestTool(SCALPEL_TOOLTYPE).hardnessAndResistance(0.5f)));
 	public static final RegistryObject<Block> ARTERY = BLOCKS.register("artery", () -> new PipeBlock("artery_connectable", Properties.create(Material.ORGANIC, MaterialColor.RED).sound(SoundType.SLIME).notSolid().harvestTool(SCALPEL_TOOLTYPE).hardnessAndResistance(0.5f)));
 	public static final RegistryObject<Block> VEIN = BLOCKS.register("vein", () -> new PipeBlock("vein_connectable", Properties.create(Material.ORGANIC, MaterialColor.BLUE).sound(SoundType.SLIME).notSolid().harvestTool(SCALPEL_TOOLTYPE).hardnessAndResistance(0.5f)));
+	public static final RegistryObject<Block> COMBUSTIVE_HEART = BLOCKS.register("combustive_heart", () -> new CombustableHeartBlock(Properties.create(Material.ORGANIC, MaterialColor.RED).sound(SoundType.SLIME).notSolid().harvestTool(SCALPEL_TOOLTYPE).hardnessAndResistance(0.5f)));
 	
 	
 	/*

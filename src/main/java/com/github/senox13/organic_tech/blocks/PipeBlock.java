@@ -5,25 +5,16 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SixWayBlock;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ITag;
-import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import com.github.senox13.organic_tech.items.OrganicTechItems;
-import com.github.senox13.organic_tech.items.ScalpelItem;
 
 import static com.github.senox13.organic_tech.OrganicTech.MODID;
 
@@ -51,14 +42,15 @@ public class PipeBlock extends SixWayBlock{ //TODO: This should eventually be wa
 			.with(WEST, Boolean.valueOf(false))
 			.with(UP, Boolean.valueOf(false))
 			.with(DOWN, Boolean.valueOf(false)));
+		//TODO: Attach a reload event listener here to cache connectable tag
 	}
 	
 	
 	/*
-	 * Private/protected methods
+	 * Public methods
 	 */
-	private boolean canConnectToBlock(Block blockIn){
-		ITag<Block> tag = BlockTags.getCollection().get(new ResourceLocation(connectableTagName)); //TODO: Use cached tag
+	public boolean canConnectToBlock(Block blockIn){
+		ITag<Block> tag = BlockTags.getCollection().get(new ResourceLocation(connectableTagName));
 		if(tag == null){
 			return false;
 		}
@@ -75,8 +67,8 @@ public class PipeBlock extends SixWayBlock{ //TODO: This should eventually be wa
     }
 	
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context){
-		Direction connectionDir = context.getFace().getOpposite();
+	public BlockState getStateForPlacement(BlockItemUseContext context){ //TODO: Automatic connection to clicked face for vertical placement, maybe only for connectable blocks
+		Direction connectionDir = context.getPlacementHorizontalFacing();
 		BlockPos adjacentPos = context.getPos().offset(connectionDir);
 		Block adjacentBlock = context.getWorld().getBlockState(adjacentPos).getBlock();
 		if(canConnectToBlock(adjacentBlock)){
@@ -106,36 +98,13 @@ public class PipeBlock extends SixWayBlock{ //TODO: This should eventually be wa
 				return stateIn.with(FACING_TO_PROPERTY_MAP.get(facing), false);
 			}
 		}
-		return stateIn;
-	}
-	
-	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		if(!worldIn.isRemote() && player.getHeldItem(handIn).getItem() instanceof ScalpelItem){
-			if(player.isSneaking()){
-				ServerPlayerEntity serverPlayer = (ServerPlayerEntity)player;
-				serverPlayer.interactionManager.tryHarvestBlock(pos);
-				ItemStack heldItem = player.getHeldItem(handIn);
-				heldItem.attemptDamageItem(1, player.getRNG(), serverPlayer);
-				worldIn.playSound(null, pos, SoundEvents.BLOCK_SLIME_BLOCK_BREAK, SoundCategory.BLOCKS, 1.0f, 1.0f);
-			}else{
-				Direction hitFace = hit.getFace();
-				if(!state.get(FACING_TO_PROPERTY_MAP.get(hitFace))){
-					BlockPos adjacentPos = pos.offset(hitFace);
-					BlockState adjacentState = worldIn.getBlockState(adjacentPos);
-					if(canConnectToBlock(adjacentState.getBlock())){
-						worldIn.setBlockState(pos, state.with(FACING_TO_PROPERTY_MAP.get(hitFace), true));
-						if(adjacentState.getBlock() instanceof PipeBlock){
-							worldIn.setBlockState(adjacentPos, adjacentState.with(FACING_TO_PROPERTY_MAP.get(hitFace.getOpposite()), true));
-						}
-						ItemStack heldItem = player.getHeldItem(handIn);
-						heldItem.attemptDamageItem(1, player.getRNG(), (ServerPlayerEntity)player);
-						worldIn.playSound(player, pos, SoundEvents.BLOCK_SLIME_BLOCK_BREAK, SoundCategory.BLOCKS, 1.0f, 1.0f);
-					}
-				}
+    	
+    	if(facingState.getBlock() instanceof PipeBlock && facingState.get(FACING_TO_PROPERTY_MAP.get(facing.getOpposite()))){
+    		PipeBlock pipe = (PipeBlock)facingState.getBlock();
+    		if(pipe.canConnectToBlock(stateIn.getBlock())){
+				return stateIn.with(FACING_TO_PROPERTY_MAP.get(facing), true);
 			}
-			return ActionResultType.SUCCESS;
 		}
-		return ActionResultType.PASS;
+		return stateIn;
 	}
 }

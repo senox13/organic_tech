@@ -31,8 +31,10 @@ public final class OrganicTechItems{
 	 * BlockItems
 	 */
 	public static final RegistryObject<Item> FLESH_BLOCK = ITEMS.register("flesh_block", () -> new BlockItem(OrganicTechBlocks.FLESH_BLOCK.get(), new Item.Properties().group(ITEM_GROUP)));
+	//TODO: Custom BlockItem subclass for these that bridge connections between exisiting pipes
 	public static final RegistryObject<Item> ARTERY = ITEMS.register("artery", () -> new BlockItem(OrganicTechBlocks.ARTERY.get(), new Item.Properties().group(ITEM_GROUP)));
 	public static final RegistryObject<Item> VEIN = ITEMS.register("vein", () -> new BlockItem(OrganicTechBlocks.VEIN.get(), new Item.Properties().group(ITEM_GROUP)));
+	public static final RegistryObject<Item> COMBUSTIVE_HEART = ITEMS.register("combustive_heart", () -> new BlockItem(OrganicTechBlocks.COMBUSTIVE_HEART.get(), new Item.Properties().group(ITEM_GROUP)));
 	
 	
 	/*

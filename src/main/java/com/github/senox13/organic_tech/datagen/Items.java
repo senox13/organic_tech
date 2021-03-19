@@ -8,6 +8,8 @@ import com.github.senox13.organic_tech.items.OrganicTechItems;
 import static com.github.senox13.organic_tech.OrganicTech.MODID;
 import static com.github.senox13.organic_tech.datagen.BlockStates.BLOCK_DIR;
 
+import com.github.senox13.organic_tech.blocks.OrganicTechBlocks;
+
 public final class Items extends ItemModelProvider{
 	/*
 	 * Fields
@@ -36,6 +38,7 @@ public final class Items extends ItemModelProvider{
 			.texture("side", BLOCK_DIR + "/artery");
 		withExistingParent(OrganicTechItems.VEIN.get().getRegistryName().getPath(), modLoc(BLOCK_DIR + "/pipe_inventory"))
 			.texture("side", BLOCK_DIR + "/vein");
+		withExistingParent(OrganicTechItems.COMBUSTIVE_HEART.get().getRegistryName().getPath(), modLoc(BLOCK_DIR + "/" + OrganicTechBlocks.COMBUSTIVE_HEART.get().getRegistryName().getPath()));
 		
 		/*
 		 * Item models

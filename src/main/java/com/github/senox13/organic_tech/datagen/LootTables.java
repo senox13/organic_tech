@@ -99,6 +99,7 @@ public final class LootTables extends LootTableProvider{
 			registerBlockItemDrop(OrganicTechBlocks.FLESH_BLOCK.get(), OrganicTechItems.FLESH_BLOCK.get());
 			registerBlockItemDrop(OrganicTechBlocks.ARTERY.get(), OrganicTechItems.ARTERY.get());
 			registerBlockItemDrop(OrganicTechBlocks.VEIN.get(), OrganicTechItems.VEIN.get());
+			registerBlockItemDrop(OrganicTechBlocks.COMBUSTIVE_HEART.get(), OrganicTechItems.COMBUSTIVE_HEART.get());
 		}
 	}
 	
