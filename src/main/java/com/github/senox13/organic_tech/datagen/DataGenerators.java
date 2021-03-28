@@ -12,7 +12,7 @@ public final class DataGenerators{
 		DataGenerator generator = event.getGenerator();
 		if(event.includeClient()){
 			generator.addProvider(new BlockStates(generator, event.getExistingFileHelper()));
-			generator.addProvider(new Items(generator, event.getExistingFileHelper()));
+			generator.addProvider(new ItemModels(generator, event.getExistingFileHelper()));
 			generator.addProvider(new LanguageEnglish(generator));
 		}
 		if(event.includeServer()){

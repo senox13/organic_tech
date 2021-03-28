@@ -10,7 +10,7 @@ import static com.github.senox13.organic_tech.datagen.BlockStates.BLOCK_DIR;
 
 import com.github.senox13.organic_tech.blocks.OrganicTechBlocks;
 
-public final class Items extends ItemModelProvider{
+public final class ItemModels extends ItemModelProvider{
 	/*
 	 * Fields
 	 */
@@ -20,7 +20,7 @@ public final class Items extends ItemModelProvider{
 	/*
 	 * Constructor
 	 */
-	public Items(DataGenerator generator, ExistingFileHelper existingFileHelper){
+	public ItemModels(DataGenerator generator, ExistingFileHelper existingFileHelper){
 		super(generator, MODID, existingFileHelper);
 	}
 	
@@ -46,7 +46,9 @@ public final class Items extends ItemModelProvider{
 		withExistingParent(OrganicTechItems.SCALPEL.get().getRegistryName().getPath(), mcLoc(ITEM_DIR + "/handheld"))
 			.texture("layer0", modLoc(ITEM_DIR + "/scalpel"));
 		withExistingParent(OrganicTechItems.COW_STOMACH.get().getRegistryName().getPath(), mcLoc(ITEM_DIR + "/generated"))
-		.texture("layer0", modLoc(ITEM_DIR + "/cow_stomach"));
+			.texture("layer0", modLoc(ITEM_DIR + "/cow_stomach"));
+		withExistingParent(OrganicTechItems.COW_HEART.get().getRegistryName().getPath(), mcLoc(ITEM_DIR + "/generated"))
+			.texture("layer0", modLoc(ITEM_DIR + "/cow_heart"));
 	}
 
 }

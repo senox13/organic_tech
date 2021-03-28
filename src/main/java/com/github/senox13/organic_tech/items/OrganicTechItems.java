@@ -42,6 +42,7 @@ public final class OrganicTechItems{
 	 */
 	public static final RegistryObject<Item> SCALPEL = ITEMS.register("scalpel", () -> new ScalpelItem(ItemTier.IRON, 3, -1.8f, new Item.Properties().group(ITEM_GROUP)));
 	public static final RegistryObject<Item> COW_STOMACH = ITEMS.register("cow_stomach", () -> new Item(new Properties().group(ITEM_GROUP)));
+	public static final RegistryObject<Item> COW_HEART = ITEMS.register("cow_heart", () -> new Item(new Properties().group(ITEM_GROUP)));
 	
 	
 	/*

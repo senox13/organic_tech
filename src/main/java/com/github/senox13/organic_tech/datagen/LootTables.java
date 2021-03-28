@@ -13,20 +13,25 @@ import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.LootTableProvider;
 import net.minecraft.data.loot.BlockLootTables;
 import net.minecraft.data.loot.EntityLootTables;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.loot.ConstantRange;
 import net.minecraft.loot.ItemLootEntry;
 import net.minecraft.loot.LootParameterSet;
 import net.minecraft.loot.LootParameterSets;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
+import net.minecraft.loot.RandomValueRange;
 import net.minecraft.loot.ValidationTracker;
 import net.minecraft.loot.conditions.SurvivesExplosion;
+import net.minecraft.loot.functions.LootingEnchantBonus;
+import net.minecraft.loot.functions.SetCount;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -117,7 +122,14 @@ public final class LootTables extends LootTableProvider{
 			registerLootTable(new ResourceLocation(MODID, "entities/cow_organs"), LootTable.builder()
 				.addLootPool(LootPool.builder() 
 					.rolls(ConstantRange.of(1))
-					.addEntry(ItemLootEntry.builder(OrganicTechItems.COW_STOMACH.get()))
+					.addEntry(
+						ItemLootEntry.builder(OrganicTechItems.COW_STOMACH.get())
+							.acceptFunction(SetCount.builder(RandomValueRange.of(0, 1)))
+							.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0, 1)))
+					)
+				).addLootPool(LootPool.builder()
+					.rolls(ConstantRange.of(1))
+					.addEntry(ItemLootEntry.builder(OrganicTechItems.COW_HEART.get()))
 				)
 			);
 		}

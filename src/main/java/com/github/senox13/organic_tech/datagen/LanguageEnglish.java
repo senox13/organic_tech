@@ -40,5 +40,6 @@ public final class LanguageEnglish extends LanguageProvider{
 		 */
 		add(OrganicTechItems.SCALPEL.get(), "Scalpel");
 		add(OrganicTechItems.COW_STOMACH.get(), "Cow Stomach");
+		add(OrganicTechItems.COW_HEART.get(), "Cow Heart");
 	}
 }
