@@ -13,7 +13,6 @@ import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.LootTableProvider;
 import net.minecraft.data.loot.BlockLootTables;
@@ -105,6 +104,7 @@ public final class LootTables extends LootTableProvider{
 			registerBlockItemDrop(OrganicTechBlocks.ARTERY.get(), OrganicTechItems.ARTERY.get());
 			registerBlockItemDrop(OrganicTechBlocks.VEIN.get(), OrganicTechItems.VEIN.get());
 			registerBlockItemDrop(OrganicTechBlocks.COMBUSTIVE_HEART.get(), OrganicTechItems.COMBUSTIVE_HEART.get());
+			registerBlockItemDrop(OrganicTechBlocks.HEART_FURNACE.get(), Items.FURNACE);
 		}
 	}
 	

@@ -5,9 +5,11 @@ import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Orientation;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
+import net.minecraftforge.client.model.generators.ModelBuilder.FaceRotation;
 import net.minecraftforge.client.model.generators.ModelBuilder.ElementBuilder;
 import net.minecraftforge.client.model.generators.ModelFile.ExistingModelFile;
 import net.minecraftforge.client.model.generators.ModelProvider;
@@ -15,11 +17,14 @@ import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 import com.github.senox13.organic_tech.blocks.CombustableHeartBlock;
+import com.github.senox13.organic_tech.blocks.HeartFurnaceBlock;
 import com.github.senox13.organic_tech.blocks.OrganicTechBlocks;
 import com.github.senox13.organic_tech.blocks.PipeBlock;
-import com.github.senox13.organic_tech.blocks.properties.BloodConnectionType;
-
+import com.github.senox13.organic_tech.blocks.properties.HeartConnectionType;
 import static com.github.senox13.organic_tech.OrganicTech.MODID;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public final class BlockStates extends BlockStateProvider{
 	/*
@@ -49,6 +54,7 @@ public final class BlockStates extends BlockStateProvider{
 		registerPipeBlock(OrganicTechBlocks.ARTERY.get(), "artery");
 		registerPipeBlock(OrganicTechBlocks.VEIN.get(), "vein");
 		registerCombustiveHeart();
+		registerHeartFurnace();
 	}
 	
 	
@@ -64,7 +70,7 @@ public final class BlockStates extends BlockStateProvider{
 		//X+ facing pipe segment, to be rotated in blockstate json
 		ElementBuilder segmentBuilder = models().getBuilder(BLOCK_DIR + "/pipe_segment").texture("particle", "#side")
 			.element().from(5, 5, 11).to(11, 11, 16);
-		for(Direction dir : Direction.values()){
+		for(Direction dir : Direction.values()){  //TODO: This adds an extra face inside the center model
 			if(dir.getAxis() == Direction.Axis.Z)continue;
 			segmentBuilder.face(dir).texture("#side");
 		}
@@ -139,22 +145,173 @@ public final class BlockStates extends BlockStateProvider{
 		String veinSegmentPath = BLOCK_DIR + "/" + OrganicTechBlocks.VEIN.get().getRegistryName().getPath() + "_segment";
 		ExistingModelFile veinSegment = models().getExistingFile(modLoc(veinSegmentPath));
 		
+		//Generate furnace connection component
+		BlockModelBuilder furnaceSegment = models().getBuilder(BLOCK_DIR + "/heart_furnace_connection")
+			.element().from(5, 5, 11).to(11, 11, 15)
+				.allFaces((dir, face) -> face.texture("#side")).end()
+			.element().from(4, 4, 15).to(12, 12, 16)
+				.allFaces((dir, face) -> face.texture("#side")).end() //TODO: This adds an extra face where it will always be culled
+			.texture("side", modLoc(BLOCK_DIR + "/artery"))
+			.texture("particle", modLoc(BLOCK_DIR + "/artery"));
+		
 		//Generate BlockState JSON
 		MultiPartBlockStateBuilder multipart = getMultipartBuilder(heartBlock);
 		multipart.part().modelFile(center).addModel();
 		//Add artery segments
-		multipart.part().modelFile(arterySegment).uvLock(true).addModel().condition(CombustableHeartBlock.SOUTH, BloodConnectionType.ARTERY);
-		multipart.part().modelFile(arterySegment).uvLock(true).rotationY(90).addModel().condition(CombustableHeartBlock.WEST, BloodConnectionType.ARTERY);
-		multipart.part().modelFile(arterySegment).uvLock(true).rotationY(180).addModel().condition(CombustableHeartBlock.NORTH, BloodConnectionType.ARTERY);
-		multipart.part().modelFile(arterySegment).uvLock(true).rotationY(270).addModel().condition(CombustableHeartBlock.EAST, BloodConnectionType.ARTERY);
-		multipart.part().modelFile(arterySegment).uvLock(true).rotationX(90).addModel().condition(CombustableHeartBlock.UP, BloodConnectionType.ARTERY);
-		multipart.part().modelFile(arterySegment).uvLock(true).rotationX(270).addModel().condition(CombustableHeartBlock.DOWN, BloodConnectionType.ARTERY);
+		multipart.part().modelFile(arterySegment).uvLock(true).addModel().condition(CombustableHeartBlock.SOUTH, HeartConnectionType.ARTERY);
+		multipart.part().modelFile(arterySegment).uvLock(true).rotationY(90).addModel().condition(CombustableHeartBlock.WEST, HeartConnectionType.ARTERY);
+		multipart.part().modelFile(arterySegment).uvLock(true).rotationY(180).addModel().condition(CombustableHeartBlock.NORTH, HeartConnectionType.ARTERY);
+		multipart.part().modelFile(arterySegment).uvLock(true).rotationY(270).addModel().condition(CombustableHeartBlock.EAST, HeartConnectionType.ARTERY);
+		multipart.part().modelFile(arterySegment).uvLock(true).rotationX(90).addModel().condition(CombustableHeartBlock.UP, HeartConnectionType.ARTERY);
+		multipart.part().modelFile(arterySegment).uvLock(true).rotationX(270).addModel().condition(CombustableHeartBlock.DOWN, HeartConnectionType.ARTERY);
 		//Add vein segments
-		multipart.part().modelFile(veinSegment).uvLock(true).addModel().condition(CombustableHeartBlock.SOUTH, BloodConnectionType.VEIN);
-		multipart.part().modelFile(veinSegment).uvLock(true).rotationY(90).addModel().condition(CombustableHeartBlock.WEST, BloodConnectionType.VEIN);
-		multipart.part().modelFile(veinSegment).uvLock(true).rotationY(180).addModel().condition(CombustableHeartBlock.NORTH, BloodConnectionType.VEIN);
-		multipart.part().modelFile(veinSegment).uvLock(true).rotationY(270).addModel().condition(CombustableHeartBlock.EAST, BloodConnectionType.VEIN);
-		multipart.part().modelFile(veinSegment).uvLock(true).rotationX(90).addModel().condition(CombustableHeartBlock.UP, BloodConnectionType.VEIN);
-		multipart.part().modelFile(veinSegment).uvLock(true).rotationX(270).addModel().condition(CombustableHeartBlock.DOWN, BloodConnectionType.VEIN);
+		multipart.part().modelFile(veinSegment).uvLock(true).addModel().condition(CombustableHeartBlock.SOUTH, HeartConnectionType.VEIN);
+		multipart.part().modelFile(veinSegment).uvLock(true).rotationY(90).addModel().condition(CombustableHeartBlock.WEST, HeartConnectionType.VEIN);
+		multipart.part().modelFile(veinSegment).uvLock(true).rotationY(180).addModel().condition(CombustableHeartBlock.NORTH, HeartConnectionType.VEIN);
+		multipart.part().modelFile(veinSegment).uvLock(true).rotationY(270).addModel().condition(CombustableHeartBlock.EAST, HeartConnectionType.VEIN);
+		multipart.part().modelFile(veinSegment).uvLock(true).rotationX(90).addModel().condition(CombustableHeartBlock.UP, HeartConnectionType.VEIN);
+		multipart.part().modelFile(veinSegment).uvLock(true).rotationX(270).addModel().condition(CombustableHeartBlock.DOWN, HeartConnectionType.VEIN);
+		//Add furnace connection segments
+		multipart.part().modelFile(furnaceSegment).uvLock(true).addModel().condition(CombustableHeartBlock.SOUTH, HeartConnectionType.FURNACE);
+		multipart.part().modelFile(furnaceSegment).uvLock(true).rotationY(90).addModel().condition(CombustableHeartBlock.WEST, HeartConnectionType.FURNACE);
+		multipart.part().modelFile(furnaceSegment).uvLock(true).rotationY(180).addModel().condition(CombustableHeartBlock.NORTH, HeartConnectionType.FURNACE);
+		multipart.part().modelFile(furnaceSegment).uvLock(true).rotationY(270).addModel().condition(CombustableHeartBlock.EAST, HeartConnectionType.FURNACE);
+		multipart.part().modelFile(furnaceSegment).uvLock(true).rotationX(90).addModel().condition(CombustableHeartBlock.UP, HeartConnectionType.FURNACE);
+		multipart.part().modelFile(furnaceSegment).uvLock(true).rotationX(270).addModel().condition(CombustableHeartBlock.DOWN, HeartConnectionType.FURNACE);
+	}
+	
+	@SuppressWarnings("rawtypes")
+	private void registerHeartFurnace(){
+		//Generate north-oriented furnace models with overlay on each direction
+		Map<Direction, BlockModelBuilder> models = new HashMap<Direction, BlockModelBuilder>();
+		Map<Direction, BlockModelBuilder> litModels = new HashMap<Direction, BlockModelBuilder>();
+		for(boolean lit : new boolean[]{true, false}){
+			for(Direction dir : Direction.values()){
+				String modelName = "heart_furnace_" + dir.toString();
+				if(lit){
+					modelName += "_on";
+				}
+				BlockModelBuilder model = models().withExistingParent(modelName, mcLoc(BLOCK_DIR + "/block"));
+				//Create furnace element
+				model.element().from(0, 0, 0).to(16, 16, 16).allFaces((faceDir, faceBuilder) -> {
+					switch(faceDir){
+						case NORTH:
+							faceBuilder.cullface(faceDir).texture("#front");
+							break;
+						case UP:
+						case DOWN:
+							faceBuilder.cullface(faceDir).texture("#top");
+							break;
+						default:
+							faceBuilder.cullface(faceDir).texture("#side");
+					}
+				});
+				//Create overlay element
+				ElementBuilder overlayElement = model.element().from(0, 0, 0).to(16, 16, 16);
+				switch(dir){
+					case UP:
+						overlayElement.face(Direction.UP).cullface(Direction.UP).texture("#overlay_top").end()
+						.face(Direction.NORTH).cullface(Direction.NORTH).texture("#overlay_side").end()
+						.face(Direction.EAST).cullface(Direction.EAST).texture("#overlay_side").end()
+						.face(Direction.SOUTH).cullface(Direction.SOUTH).texture("#overlay_side").end()
+						.face(Direction.WEST).cullface(Direction.WEST).texture("#overlay_side").end();
+						break;
+					case DOWN:
+						overlayElement.face(Direction.DOWN).cullface(Direction.DOWN).texture("#overlay_top").end()
+						.face(Direction.NORTH).cullface(Direction.NORTH).texture("#overlay_side").rotation(FaceRotation.UPSIDE_DOWN).end()
+						.face(Direction.EAST).cullface(Direction.EAST).texture("#overlay_side").rotation(FaceRotation.UPSIDE_DOWN).end()
+						.face(Direction.SOUTH).cullface(Direction.SOUTH).texture("#overlay_side").rotation(FaceRotation.UPSIDE_DOWN).end()
+						.face(Direction.WEST).cullface(Direction.WEST).texture("#overlay_side").rotation(FaceRotation.UPSIDE_DOWN).end();
+						break;
+					case EAST:
+						overlayElement.face(Direction.EAST).cullface(Direction.EAST).texture("#overlay_top").end()
+						.face(Direction.UP).cullface(Direction.UP).texture("#overlay_side").rotation(FaceRotation.CLOCKWISE_90).end()
+						.face(Direction.NORTH).cullface(Direction.NORTH).texture("#overlay_side").rotation(FaceRotation.COUNTERCLOCKWISE_90).end()
+						.face(Direction.DOWN).cullface(Direction.DOWN).texture("#overlay_side").rotation(FaceRotation.CLOCKWISE_90).end()
+						.face(Direction.SOUTH).cullface(Direction.SOUTH).texture("#overlay_side").rotation(FaceRotation.CLOCKWISE_90).end();
+						break;
+					case NORTH:
+						overlayElement.face(Direction.NORTH).cullface(Direction.NORTH).texture("#overlay_top").end()
+						.face(Direction.UP).cullface(Direction.UP).texture("#overlay_side").rotation(FaceRotation.ZERO).end()
+						.face(Direction.EAST).cullface(Direction.EAST).texture("#overlay_side").rotation(FaceRotation.CLOCKWISE_90).end()
+						.face(Direction.DOWN).cullface(Direction.DOWN).texture("#overlay_side").rotation(FaceRotation.UPSIDE_DOWN).end()
+						.face(Direction.WEST).cullface(Direction.WEST).texture("#overlay_side").rotation(FaceRotation.COUNTERCLOCKWISE_90).end();
+						break;
+					case SOUTH:
+						overlayElement.face(Direction.SOUTH).cullface(Direction.SOUTH).texture("#overlay_top").end()
+						.face(Direction.UP).cullface(Direction.UP).texture("#overlay_side").rotation(FaceRotation.UPSIDE_DOWN).end()
+						.face(Direction.EAST).cullface(Direction.EAST).texture("#overlay_side").rotation(FaceRotation.COUNTERCLOCKWISE_90).end()
+						.face(Direction.DOWN).cullface(Direction.DOWN).texture("#overlay_side").rotation(FaceRotation.ZERO).end()
+						.face(Direction.WEST).cullface(Direction.WEST).texture("#overlay_side").rotation(FaceRotation.CLOCKWISE_90).end();
+						break;
+					case WEST:
+						overlayElement.face(Direction.WEST).cullface(Direction.WEST).texture("#overlay_top").end()
+						.face(Direction.UP).cullface(Direction.UP).texture("#overlay_side").rotation(FaceRotation.COUNTERCLOCKWISE_90).end()
+						.face(Direction.NORTH).cullface(Direction.NORTH).texture("#overlay_side").rotation(FaceRotation.CLOCKWISE_90).end()
+						.face(Direction.DOWN).cullface(Direction.DOWN).texture("#overlay_side").rotation(FaceRotation.COUNTERCLOCKWISE_90).end()
+						.face(Direction.SOUTH).cullface(Direction.SOUTH).texture("#overlay_side").rotation(FaceRotation.COUNTERCLOCKWISE_90).end();
+						break;
+				}
+				//Assign textures
+				model.texture("front", mcLoc(BLOCK_DIR + (lit ? "/furnace_front_on" : "/furnace_front")))
+					.texture("top", mcLoc(BLOCK_DIR + "/furnace_top"))
+					.texture("side", mcLoc(BLOCK_DIR + "/furnace_side"))
+					.texture("overlay_top", modLoc(BLOCK_DIR + "/flesh_block")) //TODO: Placeholder texture
+					.texture("overlay_side", modLoc(BLOCK_DIR + "/furnace_overlay"))
+					.texture("particle", mcLoc(BLOCK_DIR + "/furnace_front"));
+				//Add to respective map
+				if(lit){
+					litModels.put(dir, model);
+				}else{
+					models.put(dir, model);
+				}
+			}
+		}
+		//Create map of directions for offsetting rotations
+		Map<Direction, Orientation> yRotationOffsets = new HashMap<Direction, Orientation>();
+		yRotationOffsets.put(Direction.NORTH, Orientation.IDENTITY);
+		yRotationOffsets.put(Direction.EAST, Orientation.ROT_90_Y_POS);
+		yRotationOffsets.put(Direction.SOUTH, Orientation.ROT_180_FACE_XZ);
+		yRotationOffsets.put(Direction.WEST, Orientation.ROT_90_Y_NEG);
+		//Build multipart json
+		getVariantBuilder(OrganicTechBlocks.HEART_FURNACE.get()).forAllStates(state -> {
+			//Get BlockState property values
+			Direction connectionDir = state.get(HeartFurnaceBlock.CONNECTION_FACING);
+			Direction facingDir = state.get(HeartFurnaceBlock.FACING);
+			boolean lit = state.get(HeartFurnaceBlock.LIT);
+			//Get blockstate JSON builder
+			ConfiguredModel.Builder builder = ConfiguredModel.builder();
+			switch(connectionDir){
+				case UP:
+				case DOWN:
+					builder.modelFile((lit ? litModels.get(connectionDir) : models.get(connectionDir)))
+						.rotationY(getYRotationFromFacing(facingDir));
+					break;
+				default:
+					Direction adjustedDir = yRotationOffsets.get(facingDir).func_235530_a_(connectionDir);
+					builder.modelFile((lit ? litModels.get(adjustedDir) : models.get(adjustedDir)))
+						.rotationY(getYRotationFromFacing(facingDir));
+			}
+			return builder.build();
+		});
+	}
+	
+	
+	/*
+	 * Utility methods
+	 */
+	private static int getYRotationFromFacing(Direction facing){
+		switch(facing){
+		case NORTH:
+			return 0;
+		case EAST:
+			return 90;
+		case SOUTH:
+			return 180;
+		case WEST:
+			return 270;
+		default:
+			return 0;
+		}
 	}
 }

@@ -2,13 +2,14 @@ package com.github.senox13.organic_tech.blocks.properties;
 
 import net.minecraft.util.IStringSerializable;
 
-public enum BloodConnectionType implements IStringSerializable{
+public enum HeartConnectionType implements IStringSerializable{
 	/*
 	 * Enum values
 	 */
 	NONE,
 	VEIN,
-	ARTERY;
+	ARTERY,
+	FURNACE;
 	
 	
 	/*
