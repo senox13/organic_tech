@@ -8,33 +8,26 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ITag;
+import net.minecraft.tags.ITag.INamedTag;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-
-import static com.github.senox13.organic_tech.OrganicTech.MODID;
 
 public class PipeBlock extends SixWayBlock{ //TODO: This should eventually be waterloggable
 	/*
 	 * Fields
 	 */
 	public static final float APOTHEM = 3f/16f;
-	public final String connectableTagName;
+	public final INamedTag<Block> connectableTag;
 	
 	
 	/*
 	 * Constructor
 	 */
-	public PipeBlock(String connectableTagNameIn, Properties properties){
+	public PipeBlock(INamedTag<Block> connectableTag, Properties properties){
 		super(APOTHEM, properties);
-		if(connectableTagNameIn.indexOf(':') == -1){
-			connectableTagNameIn = MODID + ":" + connectableTagNameIn;
-		}
-		this.connectableTagName = connectableTagNameIn;
+		this.connectableTag = connectableTag;
 		this.setDefaultState(this.stateContainer.getBaseState()
 			.with(NORTH, Boolean.valueOf(false))
 			.with(EAST, Boolean.valueOf(false))
@@ -42,7 +35,6 @@ public class PipeBlock extends SixWayBlock{ //TODO: This should eventually be wa
 			.with(WEST, Boolean.valueOf(false))
 			.with(UP, Boolean.valueOf(false))
 			.with(DOWN, Boolean.valueOf(false)));
-		//TODO: Attach a reload event listener here to cache connectable tag
 	}
 	
 	
@@ -50,11 +42,7 @@ public class PipeBlock extends SixWayBlock{ //TODO: This should eventually be wa
 	 * Public methods
 	 */
 	public boolean canConnectToBlock(Block blockIn){
-		ITag<Block> tag = BlockTags.getCollection().get(new ResourceLocation(connectableTagName));
-		if(tag == null){
-			return false;
-		}
-		return tag.contains(blockIn);
+		return connectableTag.contains(blockIn);
 	}
 	
 	
@@ -84,7 +72,7 @@ public class PipeBlock extends SixWayBlock{ //TODO: This should eventually be wa
 				BlockPos adjacentPos = pos.offset(dir);
 				BlockState adjacentState = worldIn.getBlockState(adjacentPos);
 				Block adjacentBlock = adjacentState.getBlock();
-				if(adjacentBlock instanceof PipeBlock && canConnectToBlock(adjacentBlock)){ //FIXME: Hardcoded for now
+				if(adjacentBlock instanceof PipeBlock && canConnectToBlock(adjacentBlock)){ //TODO: Hardcoded for now
 					worldIn.setBlockState(adjacentPos, adjacentState.with(FACING_TO_PROPERTY_MAP.get(dir.getOpposite()), true));
 				}
 			}

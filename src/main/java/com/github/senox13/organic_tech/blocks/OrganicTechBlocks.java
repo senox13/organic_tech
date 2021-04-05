@@ -13,6 +13,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import static com.github.senox13.organic_tech.OrganicTech.MODID;
 
+import com.github.senox13.organic_tech.util.OrganicTechTags;
+
 public final class OrganicTechBlocks{
 	/*
 	 * Fields
@@ -20,8 +22,8 @@ public final class OrganicTechBlocks{
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
 	public static final ToolType SCALPEL_TOOLTYPE = ToolType.get("scalpel");
 	public static final RegistryObject<Block> FLESH_BLOCK = BLOCKS.register("flesh_block", () -> new Block(Properties.create(Material.ORGANIC, MaterialColor.RED).sound(SoundType.SLIME).harvestTool(SCALPEL_TOOLTYPE).hardnessAndResistance(0.5f)));
-	public static final RegistryObject<Block> ARTERY = BLOCKS.register("artery", () -> new PipeBlock("artery_connectable", Properties.create(Material.ORGANIC, MaterialColor.RED).sound(SoundType.SLIME).notSolid().harvestTool(SCALPEL_TOOLTYPE).hardnessAndResistance(0.5f)));
-	public static final RegistryObject<Block> VEIN = BLOCKS.register("vein", () -> new PipeBlock("vein_connectable", Properties.create(Material.ORGANIC, MaterialColor.BLUE).sound(SoundType.SLIME).notSolid().harvestTool(SCALPEL_TOOLTYPE).hardnessAndResistance(0.5f)));
+	public static final RegistryObject<Block> ARTERY = BLOCKS.register("artery", () -> new PipeBlock(OrganicTechTags.ARTERY_CONNECTABLE, Properties.create(Material.ORGANIC, MaterialColor.RED).sound(SoundType.SLIME).notSolid().harvestTool(SCALPEL_TOOLTYPE).hardnessAndResistance(0.5f)));
+	public static final RegistryObject<Block> VEIN = BLOCKS.register("vein", () -> new PipeBlock(OrganicTechTags.VEIN_CONNECTABLE, Properties.create(Material.ORGANIC, MaterialColor.BLUE).sound(SoundType.SLIME).notSolid().harvestTool(SCALPEL_TOOLTYPE).hardnessAndResistance(0.5f)));
 	public static final RegistryObject<Block> COMBUSTIVE_HEART = BLOCKS.register("combustive_heart", () -> new CombustableHeartBlock(Properties.create(Material.ORGANIC, MaterialColor.RED).sound(SoundType.SLIME).notSolid().harvestTool(SCALPEL_TOOLTYPE).hardnessAndResistance(0.5f)));
 	public static final RegistryObject<Block> HEART_FURNACE = BLOCKS.register("heart_furnace", () -> new HeartFurnaceBlock(Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(3.5F)));
 	
