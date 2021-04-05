@@ -1,19 +1,9 @@
-package com.github.senox13.organic_tech.items;
+  package com.github.senox13.organic_tech.items;
 
-import java.util.Set;
-
-import com.github.senox13.organic_tech.blocks.CombustableHeartBlock;
-import com.github.senox13.organic_tech.blocks.OrganicTechBlocks;
+import java.util.Collections;
 import com.github.senox13.organic_tech.blocks.PipeBlock;
-import com.github.senox13.organic_tech.blocks.properties.BloodConnectionType;
-import com.google.common.collect.Sets;
-
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.IItemTier;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.ToolItem;
 import net.minecraft.util.ActionResultType;
@@ -21,27 +11,17 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 
+
 public class ScalpelItem extends ToolItem{
-	/*
-	 * Fields
-	 */
-	private static final Set<Block> EFFECTIVE_ON_BLOCKS = Sets.newHashSet(
-		OrganicTechBlocks.FLESH_BLOCK.get(), //TODO: I don't like how hardcoded this is, replace with getDestroySpeed and a block tag
-		OrganicTechBlocks.ARTERY.get(),
-		OrganicTechBlocks.VEIN.get(),
-		OrganicTechBlocks.COMBUSTIVE_HEART.get()
-	);
-	
-	
 	/*
 	 * Constructor
 	 */
 	public ScalpelItem(IItemTier tier, float attackDamageIn, float attackSpeedIn, Properties builderIn){
-		super(attackDamageIn, attackSpeedIn, tier, EFFECTIVE_ON_BLOCKS, builderIn.addToolType(ToolType.get("scalpel"), tier.getHarvestLevel()));
+		super(attackDamageIn, attackSpeedIn, tier, Collections.emptySet(), builderIn.addToolType(ToolType.get("scalpel"), tier.getHarvestLevel()));
+		
 	}
 	
 	
