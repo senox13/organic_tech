@@ -4,8 +4,8 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.extensions.IForgeContainerType;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import static com.github.senox13.organic_tech.OrganicTech.MODID;
@@ -25,7 +25,7 @@ public final class OrganicTechContainers{
 	/*
 	 * Methods
 	 */
-	public static void register(){
-		CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
+	public static void register(IEventBus bus){
+		CONTAINERS.register(bus);
 	}
 }

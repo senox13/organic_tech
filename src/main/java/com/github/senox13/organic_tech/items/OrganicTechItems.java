@@ -1,16 +1,18 @@
 package com.github.senox13.organic_tech.items;
 
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.Properties;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTier;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import com.github.senox13.organic_tech.blocks.OrganicTechBlocks;
+import com.github.senox13.organic_tech.fluids.OrganicTechFluids;
 
 import static com.github.senox13.organic_tech.OrganicTech.MODID;
 
@@ -43,12 +45,13 @@ public final class OrganicTechItems{
 	public static final RegistryObject<Item> SCALPEL = ITEMS.register("scalpel", () -> new ScalpelItem(ItemTier.IRON, 3, -1.8f, new Item.Properties().group(ITEM_GROUP)));
 	public static final RegistryObject<Item> COW_STOMACH = ITEMS.register("cow_stomach", () -> new Item(new Properties().group(ITEM_GROUP)));
 	public static final RegistryObject<Item> COW_HEART = ITEMS.register("cow_heart", () -> new Item(new Properties().group(ITEM_GROUP)));
+	public static final RegistryObject<Item> BLOOD_BUCKET = ITEMS.register("blood_bucket", () -> new BucketItem(OrganicTechFluids.BLOOD, new Properties().group(ITEM_GROUP).maxStackSize(1)));
 	
 	
 	/*
 	 * Methods
 	 */
-	public static void register(){
-		ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+	public static void register(IEventBus bus){
+		ITEMS.register(bus);
 	}
 }

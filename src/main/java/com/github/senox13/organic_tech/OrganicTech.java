@@ -3,10 +3,13 @@ package com.github.senox13.organic_tech;
 import com.github.senox13.organic_tech.blocks.OrganicTechBlocks;
 import com.github.senox13.organic_tech.blocks.containers.OrganicTechContainers;
 import com.github.senox13.organic_tech.events.ClientEventHandlers;
+import com.github.senox13.organic_tech.fluids.OrganicTechFluids;
 import com.github.senox13.organic_tech.items.OrganicTechItems;
 import com.github.senox13.organic_tech.loot.OrganicTechLootModifiers;
 import com.github.senox13.organic_tech.tileentity.OrganicTechTileEntities;
 
+import net.minecraft.fluid.Fluid;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -22,13 +25,15 @@ public final class OrganicTech{
 	 * Constructor
 	 */
     public OrganicTech(){
-    	//Register DeferredRegisters
-    	OrganicTechBlocks.register();
-    	OrganicTechItems.register();
-    	OrganicTechTileEntities.register();
-    	OrganicTechContainers.register();
-    	OrganicTechLootModifiers.register();
+    	IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+    	//Register registry event listeners
+    	OrganicTechBlocks.register(bus);
+    	OrganicTechItems.register(bus);
+    	OrganicTechTileEntities.register(bus);
+    	OrganicTechContainers.register(bus);
+    	OrganicTechLootModifiers.register(bus);
+    	bus.addGenericListener(Fluid.class, OrganicTechFluids::register);
     	//Register other event handlers
-    	FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientEventHandlers::ClientSetup);
+    	bus.addListener(ClientEventHandlers::ClientSetup);
     }
 }

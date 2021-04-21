@@ -1,7 +1,9 @@
 package com.github.senox13.organic_tech.datagen;
 
 import net.minecraft.data.DataGenerator;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.client.model.generators.loaders.DynamicBucketModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import com.github.senox13.organic_tech.items.OrganicTechItems;
 
@@ -9,6 +11,7 @@ import static com.github.senox13.organic_tech.OrganicTech.MODID;
 import static com.github.senox13.organic_tech.datagen.BlockStates.BLOCK_DIR;
 
 import com.github.senox13.organic_tech.blocks.OrganicTechBlocks;
+import com.github.senox13.organic_tech.fluids.OrganicTechFluids;
 
 public final class ItemModels extends ItemModelProvider{
 	/*
@@ -49,6 +52,9 @@ public final class ItemModels extends ItemModelProvider{
 			.texture("layer0", modLoc(ITEM_DIR + "/cow_stomach"));
 		withExistingParent(OrganicTechItems.COW_HEART.get().getRegistryName().getPath(), mcLoc(ITEM_DIR + "/generated"))
 			.texture("layer0", modLoc(ITEM_DIR + "/cow_heart"));
+		withExistingParent(OrganicTechItems.BLOOD_BUCKET.get().getRegistryName().getPath(), new ResourceLocation("forge", ITEM_DIR + "/bucket"))
+			.customLoader((builder, file) -> DynamicBucketModelBuilder.begin(builder, file).fluid(OrganicTechFluids.BLOOD.get()));
+		
 	}
 
 }

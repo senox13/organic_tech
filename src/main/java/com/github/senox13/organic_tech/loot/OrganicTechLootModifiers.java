@@ -1,8 +1,8 @@
 package com.github.senox13.organic_tech.loot;
 
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -19,7 +19,7 @@ public final class OrganicTechLootModifiers{
 	/*
 	 * Methods
 	 */
-	public static void register(){
-		LOOT_MODIFIER_SERIALIZERS.register(FMLJavaModLoadingContext.get().getModEventBus());
+	public static void register(IEventBus bus){
+		LOOT_MODIFIER_SERIALIZERS.register(bus);
 	}
 }

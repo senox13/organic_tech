@@ -1,8 +1,8 @@
 package com.github.senox13.organic_tech.tileentity;
 
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import com.github.senox13.organic_tech.blocks.OrganicTechBlocks;
@@ -22,7 +22,7 @@ public final class OrganicTechTileEntities{
 	/*
 	 * Methods
 	 */
-	public static void register(){
-		TILE_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
+	public static void register(IEventBus bus){
+		TILE_ENTITIES.register(bus);
 	}
 }
