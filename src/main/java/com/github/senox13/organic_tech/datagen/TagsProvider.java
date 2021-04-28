@@ -24,7 +24,7 @@ public final class TagsProvider{
 	/*
 	 * Nested types
 	 */
-	public static final class BlockTags extends BlockTagsProvider{ //TODO: Add FluidTags class, make both inner classes of Tags class
+	public static final class BlockTags extends BlockTagsProvider{
 		/*
 		 * Constructor
 		 */
@@ -69,7 +69,13 @@ public final class TagsProvider{
 		
 		@Override
 		protected void registerTags(){
-			this.getOrCreateBuilder(net.minecraft.tags.FluidTags.WATER).add(OrganicTechFluids.BLOOD.get(), OrganicTechFluids.BLOOD_FLOWING.get());
+			this.getOrCreateBuilder(net.minecraft.tags.FluidTags.WATER)
+				.add(
+					OrganicTechFluids.ARTERIAL_BLOOD.get(),
+					OrganicTechFluids.ARTERIAL_BLOOD_FLOWING.get(),
+					OrganicTechFluids.VENOUS_BLOOD.get(),
+					OrganicTechFluids.VENOUS_BLOOD_FLOWING.get()
+				);
 		}
 	}
 }

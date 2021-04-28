@@ -52,9 +52,10 @@ public final class ItemModels extends ItemModelProvider{
 			.texture("layer0", modLoc(ITEM_DIR + "/cow_stomach"));
 		withExistingParent(OrganicTechItems.COW_HEART.get().getRegistryName().getPath(), mcLoc(ITEM_DIR + "/generated"))
 			.texture("layer0", modLoc(ITEM_DIR + "/cow_heart"));
-		withExistingParent(OrganicTechItems.BLOOD_BUCKET.get().getRegistryName().getPath(), new ResourceLocation("forge", ITEM_DIR + "/bucket"))
-			.customLoader((builder, file) -> DynamicBucketModelBuilder.begin(builder, file).fluid(OrganicTechFluids.BLOOD.get()));
-		
+		withExistingParent(OrganicTechItems.ARTERIAL_BLOOD_BUCKET.get().getRegistryName().getPath(), new ResourceLocation("forge", ITEM_DIR + "/bucket"))
+			.customLoader((builder, file) -> DynamicBucketModelBuilder.begin(builder, file).fluid(OrganicTechFluids.ARTERIAL_BLOOD.get()));
+		withExistingParent(OrganicTechItems.VENOUS_BLOOD_BUCKET.get().getRegistryName().getPath(), new ResourceLocation("forge", ITEM_DIR + "/bucket"))
+			.customLoader((builder, file) -> DynamicBucketModelBuilder.begin(builder, file).fluid(OrganicTechFluids.VENOUS_BLOOD.get()));
 	}
 
 }

@@ -41,6 +41,7 @@ public final class LanguageEnglish extends LanguageProvider{
 		add(OrganicTechItems.SCALPEL.get(), "Scalpel");
 		add(OrganicTechItems.COW_STOMACH.get(), "Cow Stomach");
 		add(OrganicTechItems.COW_HEART.get(), "Cow Heart");
-		add(OrganicTechItems.BLOOD_BUCKET.get(), "Bucket of Blood");
+		add(OrganicTechItems.ARTERIAL_BLOOD_BUCKET.get(), "Bucket of Arterial Blood");
+		add(OrganicTechItems.VENOUS_BLOOD_BUCKET.get(), "Bucket of Venous Blood");
 	}
 }

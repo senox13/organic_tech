@@ -9,6 +9,7 @@ import net.minecraft.util.math.vector.Orientation;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
+import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelBuilder.FaceRotation;
 import net.minecraftforge.client.model.generators.ModelBuilder.ElementBuilder;
 import net.minecraftforge.client.model.generators.ModelFile.ExistingModelFile;
@@ -55,6 +56,8 @@ public final class BlockStates extends BlockStateProvider{
 		registerPipeBlock(OrganicTechBlocks.VEIN.get(), "vein");
 		registerCombustiveHeart();
 		registerHeartFurnace();
+		registerFluid(OrganicTechBlocks.ARTERIAL_BLOOD.get(),modLoc(BLOCK_DIR + "/arterial_blood_still"));
+		registerFluid(OrganicTechBlocks.VENOUS_BLOOD.get(),modLoc(BLOCK_DIR + "/venous_blood_still"));
 	}
 	
 	
@@ -293,6 +296,14 @@ public final class BlockStates extends BlockStateProvider{
 						.rotationY(getYRotationFromFacing(facingDir));
 			}
 			return builder.build();
+		});
+	}
+	
+	private void registerFluid(Block fluidBlock, ResourceLocation particle){ //TODO: args
+		ModelFile model = models().getBuilder(BLOCK_DIR + "/" + fluidBlock.getRegistryName().getPath())
+			.texture("particle", particle);
+		getVariantBuilder(fluidBlock).forAllStates(state -> {
+			return ConfiguredModel.builder().modelFile(model).build();
 		});
 	}
 	

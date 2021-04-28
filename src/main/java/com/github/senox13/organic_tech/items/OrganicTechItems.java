@@ -45,8 +45,8 @@ public final class OrganicTechItems{
 	public static final RegistryObject<Item> SCALPEL = ITEMS.register("scalpel", () -> new ScalpelItem(ItemTier.IRON, 3, -1.8f, new Item.Properties().group(ITEM_GROUP)));
 	public static final RegistryObject<Item> COW_STOMACH = ITEMS.register("cow_stomach", () -> new Item(new Properties().group(ITEM_GROUP)));
 	public static final RegistryObject<Item> COW_HEART = ITEMS.register("cow_heart", () -> new Item(new Properties().group(ITEM_GROUP)));
-	public static final RegistryObject<Item> BLOOD_BUCKET = ITEMS.register("blood_bucket", () -> new BucketItem(OrganicTechFluids.BLOOD, new Properties().group(ITEM_GROUP).maxStackSize(1)));
-	
+	public static final RegistryObject<Item> ARTERIAL_BLOOD_BUCKET = ITEMS.register("arterial_blood_bucket", () -> new BucketItem(OrganicTechFluids.ARTERIAL_BLOOD, new Properties().group(ITEM_GROUP).maxStackSize(1)));
+	public static final RegistryObject<Item> VENOUS_BLOOD_BUCKET = ITEMS.register("venous_blood_bucket", () -> new BucketItem(OrganicTechFluids.VENOUS_BLOOD, new Properties().group(ITEM_GROUP).maxStackSize(1)));
 	
 	/*
 	 * Methods
